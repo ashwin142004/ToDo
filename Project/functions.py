@@ -1,4 +1,4 @@
-FILEPATH = "todos.txt"
+FILEPATH = "D:\\ToDo\\Project\\todos.txt"
 
 def get_todos(filepath = FILEPATH):
     """Reads the todos from a file and returns a list of todos"""
