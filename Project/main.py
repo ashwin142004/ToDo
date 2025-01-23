@@ -1,21 +1,20 @@
-todos = []
+from functions import get_todos, write_todos
+
 while True:
     user_action = input("Type add, edit, show, completed or exit: ").strip()
 
-    if user_action.startswith("add"):
+    if user_action.startswith("add"): 
         todo = user_action[4:]
         
-        with open("todos.txt", "r") as file:
-            todos = file.readlines()
+        todos = get_todos()
         
         todos.append(todo + '\n')
-        
-        with open("todos.txt", "w") as file:
-            file.writelines(todos)
+
+        write_todos(todos)        
     
     elif user_action.startswith("show"):    
-        with open("todos.txt", "r") as file:
-            todos = file.readlines()
+        
+        todos = get_todos()
 
         for index, todo in enumerate(todos):
             todo = todo.strip('\n')
@@ -27,39 +26,48 @@ while True:
             todo_index = int(user_action[5:])
             todo_index -= 1
             
-            with open("todos.txt", "r") as file:
-                todos = file.readlines()
+            todos = get_todos()
             
             new_todo = input("Type the new todo text:")
             todos[todo_index] = new_todo + '\n'
             
-            with open("todos.txt", "w") as file:
-                file.writelines(todos)
-        except ValueError | IndexError:
+            write_todos(todos)
+        
+        except ValueError:
+            print("Invalid index")
+            continue
+        
+        except IndexError:
             print("Invalid index")
             continue
         
     elif user_action.startswith("complete"):
         try:
             todo_index = int(user_action[9:])
-            with open("todos.txt", "r") as file:
-                todos = file.readlines()
+            
+            todos = get_todos()
+            
             index = todo_index - 1
             todo_to_remove = todos[index].strip('\n')
             todos.pop(index)
 
-            with open("todos.txt", "w") as file:
-                file.writelines(todos)
+            write_todos(todos)
 
             message = f"Todo {todo_to_remove} was removed from the list"
             print(message)  
-        except ValueError | IndexError:
+        
+        except ValueError:
+            print("Invalid index")
+            continue
+        
+        except IndexError:
             print("Invalid index")
             continue
 
     elif user_action.startswith('exit'):
         print("Goodbye!")
         break
+    
     else:
         print("Invalid command")
-    
+
